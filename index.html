@@ -1,17 +1,23 @@
 <html>
 <head>
     <title>Cashbook</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
 </head>
 
 <body>
 <form>
     <label for="pswd">Enter your password: </label>
-    <input type="password" id="pswd" />
+    <input type="password" id="pswd" onkeypress="checkEnter(this.form);"/>
     <input type="button" value="Submit" onclick="checkPswd();" />
 </form>
 <!--Function to check password the already set password is admin-->
 <script>
+    var input = document.getElementById("password");
+    function checkEnter(f) {
+        if(f.keyCode == 13){
+            document.getElementById("button").click();
+        }
+    }
+
     function checkPswd() {
         var confirmPassword = "860626";
         var password = document.getElementById("pswd").value;
@@ -24,5 +30,6 @@
         }
     }
 </script>
+
 </body>
 </html>

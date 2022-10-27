@@ -15,11 +15,14 @@ for (var i = 2209; i < 5000; i++) {
     //var path = './data/'
 
 $.getJSON("./data/2209/itmes.json", function(data) {
-    console.log(data);
-});
-
-$.getJSON("./data/2210/itmes.json", function(data) {
-    console.log(data);
+    items = data['items']
+    console.log(items);
+    const ctx = document.getElementById('title').getContext('2d');
+    ctx.font = "48px '맑은 고딕'";
+    ctx.textAlign = 'right';
+    ctx.fillText('Profit:', 200, 50);
+    ctx.fillText('Loss:', 200, 100);
+    ctx.fillText('Total:', 200, 150);
 });
 
 const ctx = document.getElementById('myChart').getContext('2d');
