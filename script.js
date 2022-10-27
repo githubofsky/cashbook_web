@@ -14,15 +14,41 @@ for (var i = 2209; i < 5000; i++) {
 */
     //var path = './data/'
 
-$.getJSON("./data/2209/itmes.json", function(data) {
+$.getJSON("./data/2209/items.json", function(data) {
     items = data['items']
     console.log(items);
+
+    var profit = 0
+    var loss = 0
+    for (var i=0; i<items.length; i++) {
+        var price = Number(items[i]['price'])
+        if (price >= 0) {
+            profit += price;
+        } else {
+            loss -= price;
+        }
+    }
+    sum = profit - loss;
+
     const ctx = document.getElementById('title').getContext('2d');
-    ctx.font = "48px '맑은 고딕'";
+    ctx.font = "60px 'Fira Sans'";
     ctx.textAlign = 'right';
-    ctx.fillText('Profit:', 200, 50);
-    ctx.fillText('Loss:', 200, 100);
-    ctx.fillText('Total:', 200, 150);
+    ctx.fillText('Profit:', 400, 100);
+    ctx.fillText('Loss:', 400, 200);
+    ctx.fillText('Total:', 400, 300);
+
+    ctx.font = "80px 'Fira Sans'";
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(54, 162, 235, 1)',
+    ctx.fillText(profit.toLocaleString(), 450, 100);
+    ctx.fillStyle = 'rgba(255, 99, 132, 1)';
+    ctx.fillText(loss.toLocaleString(), 450, 200);
+    if (sum >= 0) {
+        ctx.fillStyle = 'rgba(54, 162, 235, 1)';
+    } else {
+        ctx.fillStyle = 'rgba(255, 99, 132, 1)';
+    }
+    ctx.fillText(sum.toLocaleString(), 450, 300);
 });
 
 const ctx = document.getElementById('myChart').getContext('2d');
