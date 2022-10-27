@@ -17,9 +17,9 @@ for (var i = 2209; i < 5000; i++) {
 $.getJSON("./data/2209/itmes.json", function(data) {
     console.log(data);
 });
-alert('done1');
+//alert('done1');
 
 $.getJSON("./data/2210/itmes.json", function(data) {
     console.log(data);
 });
-alert('done2');
+//alert('done2');
