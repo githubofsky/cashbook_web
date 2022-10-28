@@ -333,8 +333,8 @@ function drawItem(title, item, canvas) {
     ctx.font = "36px '맑은 고딕'";
     for (var i = 0; i < len; i++) {
         ctx.fillText(item[i]["date"], 0, title_h+(i+1)*gap);
-        ctx.fillText(item[i]["name"].slice(0,12), 300, title_h+(i+1)*gap);
-        ctx.fillText(Number(item[i]["price"]).toLocaleString(), 685, title_h+(i+1)*gap);
-        ctx.fillText(item[i]["memo"], 870, title_h+(i+1)*gap);
+        ctx.fillText(item[i]["name"].slice(0,8), 300, title_h+(i+1)*gap);
+        ctx.fillText(Number(item[i]["price"]).toLocaleString(), 610, title_h+(i+1)*gap);
+        ctx.fillText(item[i]["memo"].slice(0,6), 780, title_h+(i+1)*gap);
     }
 };
