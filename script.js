@@ -231,7 +231,7 @@ $.getJSON("./data/2209/items.json", function(data) {
     drawItem("세금", tax_item, "taxItem");
 
     // draw loss2
-    var loss2 = food_price;
+    var loss2 = food_price+conve_price+mart_price+med_price+culture_price+etc_price;
     drawTitle('변동지출: ' + loss2.toLocaleString(), 'rgba(255, 99, 132, 1)', 'loss2Title');
 
     // draw necessity chart 
