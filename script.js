@@ -45,10 +45,19 @@ var tax_price = 0;
 // 변동지출
 var food_item = [];
 var food_price = 0;
+var conve_item = [];
+var conve_price = 0;
+var mart_item = [];
+var mart_price = 0;
+var med_item = [];
+var med_price = 0;
+var culture_item = [];
+var culture_price = 0;
+var etc_item = [];
+var etc_price = 0;
 
 $.getJSON("./data/2209/items.json", function(data) {
     items = data['items']
-    console.log(items);
 
     var profit = 0
     var loss = 0
@@ -67,7 +76,7 @@ $.getJSON("./data/2209/items.json", function(data) {
                 income_price += price;
             }
         } else {
-            loss -= price;
+            loss += price;
             if (items[i]['label'] == "대출이자") {
                 interest_item.push(items[i]);
                 interest_price += price;
@@ -92,13 +101,36 @@ $.getJSON("./data/2209/items.json", function(data) {
             } else if (items[i]['label'] == "저축") {
                 saving_item.push(items[i]);
                 saving_price += price;
+            } else if (items[i]['label'] == "세금") {
+                tax_item.push(items[i]);
+                tax_price += price;
             } else if (items[i]['label'] == "식비") {
                 food_item.push(items[i]);
                 food_price += price;
+            } else if (items[i]['label'] == "편의점") {
+                conve_item.push(items[i]);
+                conve_price += price;
+            } else if (items[i]['label'] == "마트") {
+                mart_item.push(items[i]);
+                mart_price += price;
+            } else if (items[i]['label'] == "의료비") {
+                med_item.push(items[i]);
+                med_price += price;
+            } else if (items[i]['label'] == "문화생활") {
+                culture_item.push(items[i]);
+                culture_price += price;
+            } else {
+                etc_item.push(items[i]);
+                etc_price += price;
             }
         }
     }
-    sum = profit - loss;
+    sum = profit + loss;
+
+    const ctx_m = document.getElementById('month').getContext('2d');
+    ctx_m.font = "30px '맑은 고딕'";
+    ctx_m.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx_m.fillText('2022.09', 0, 30);
 
     const ctx = document.getElementById('title').getContext('2d');
     ctx.canvas.width = window.innerWidth;
@@ -111,7 +143,7 @@ $.getJSON("./data/2209/items.json", function(data) {
 
     ctx.font = "80px 'Fira Sans'";
     ctx.textAlign = 'left';
-    ctx.fillStyle = 'rgba(54, 162, 235, 1)',
+    ctx.fillStyle = 'rgba(54, 162, 235, 1)';
     ctx.fillText(profit.toLocaleString(), w*0.44, 100);
     ctx.fillStyle = 'rgba(255, 99, 132, 1)';
     ctx.fillText(loss.toLocaleString(), w*0.44, 200);
@@ -128,10 +160,6 @@ $.getJSON("./data/2209/items.json", function(data) {
 
     // draw profit chart 
     Chart.defaults.font.size = 50;
-    console.log(salary_item);
-    console.log(salary_price);
-    console.log(bonus_price);
-    console.log(income_price);
     const ctx_pc = document.getElementById('profitChart').getContext('2d');
     const pChart = new Chart(ctx_pc, {
         type: 'doughnut',
@@ -157,18 +185,15 @@ $.getJSON("./data/2209/items.json", function(data) {
     drawItem("월급", salary_item, "salaryItem");
     drawItem("성과급", bonus_item, "bonusItem");
     drawItem("기타소득", income_item, "incomeItem");
-    //console.log(income_item);
 
     // draw necessity loss
-    drawTitle('고정지출: ' + (salary_price+bonus_price+income_price).toLocaleString(),
+    var necessity = interest_price+insurance_price+tele_price+house_price+edu_price+gas_price+
+        family_price+saving_price+tax_price;
+    drawTitle('고정지출: ' + necessity.toLocaleString(),
         'rgba(255, 99, 132, 1)', 'loss1Title');
 
     // draw necessity chart 
     Chart.defaults.font.size = 50;
-    console.log(salary_item);
-    console.log(salary_price);
-    console.log(bonus_price);
-    console.log(income_price);
     const ctx_l1c = document.getElementById('loss1Chart').getContext('2d');
     const l1Chart = new Chart(ctx_l1c, {
         type: 'doughnut',
@@ -195,8 +220,52 @@ $.getJSON("./data/2209/items.json", function(data) {
     });
 
     // draw necessity item
-    drawItem("월급", salary_item, "salaryItem");
+    drawItem("이자", interest_item, "interestItem");
+    drawItem("보험금", insurance_item, "insuranceItem");
+    drawItem("통신비", tele_item, "teleItem");
+    drawItem("주거비", house_item, "houseItem");
+    drawItem("교육비", edu_item, "eduItem");
+    drawItem("유류비", gas_item, "gasItem");
+    drawItem("가족", family_item, "familyItem");
+    drawItem("저축", saving_item, "savingItem");
+    drawItem("세금", tax_item, "taxItem");
 
+    // draw loss2
+    var loss2 = food_price;
+    drawTitle('변동지출: ' + loss2.toLocaleString(), 'rgba(255, 99, 132, 1)', 'loss2Title');
+
+    // draw necessity chart 
+    Chart.defaults.font.size = 50;
+    const ctx_l2c = document.getElementById('loss2Chart').getContext('2d');
+    const l2Chart = new Chart(ctx_l2c, {
+        type: 'doughnut',
+        data: {
+            labels: ['식비', '편의점', '마트', '의료비', '문화생활', '기타지출'],
+            datasets: [{
+                label: 'Amount',
+                data: [food_price, conve_price, mart_price, med_price, culture_price, etc_price],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(247, 101, 163, 1)',
+                    'rgba(161, 85, 185, 1)',
+                    'rgba(22, 91, 169, 1)',
+                ],
+                hoverOffset: 4
+            }]
+        }
+    });
+
+    drawItem("식비", food_item, "foodItem");
+    drawItem("편의점", conve_item, "conveItem");
+    drawItem("마트", mart_item, "martItem");
+    drawItem("의료비", med_item, "medItem");
+    drawItem("문화생활", culture_item, "cultureItem");
+    drawItem("기타지출", etc_item, "etcItem");
 });
 
 /*
@@ -264,7 +333,7 @@ function drawItem(title, item, canvas) {
     ctx.font = "36px '맑은 고딕'";
     for (var i = 0; i < len; i++) {
         ctx.fillText(item[i]["date"], 0, title_h+(i+1)*gap);
-        ctx.fillText(item[i]["name"], 300, title_h+(i+1)*gap);
+        ctx.fillText(item[i]["name"].slice(0,12), 300, title_h+(i+1)*gap);
         ctx.fillText(Number(item[i]["price"]).toLocaleString(), 685, title_h+(i+1)*gap);
         ctx.fillText(item[i]["memo"], 870, title_h+(i+1)*gap);
     }
