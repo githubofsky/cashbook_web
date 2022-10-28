@@ -63,7 +63,7 @@ $.getJSON("./data/2209/items.json", function(data) {
     var loss = 0
     for (var i=0; i<items.length; i++) {
         var price = Number(items[i]['price'])
-        if (price >= 0) {
+        if (price > 0) {
             profit += price;
             if (items[i]['label'] == "월급") {
                 salary_item.push(items[i]);
@@ -75,7 +75,7 @@ $.getJSON("./data/2209/items.json", function(data) {
                 income_item.push(items[i]);
                 income_price += price;
             }
-        } else {
+        } else if (price < 0) {
             loss += price;
             if (items[i]['label'] == "대출이자") {
                 interest_item.push(items[i]);
