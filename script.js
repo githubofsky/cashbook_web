@@ -160,16 +160,18 @@ function drawItem(title, item, canvas) {
     const ctx = document.getElementById(canvas).getContext('2d');
     var len = item.length;
     ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = 25 + len*20 + 20;
+    var title_h = 45
+    var gap = 40
+    ctx.canvas.height = title_h + len*gap + title_h;
     var w = ctx.canvas.width;
 
-    ctx.font = "bold 20px '맑은 고딕'";
-    ctx.fillText(title, 2, 20);
-    ctx.font = "18px '맑은 고딕'";
+    ctx.font = "bold 40px '맑은 고딕'";
+    ctx.fillText(title, 2, 40);
+    ctx.font = "38px '맑은 고딕'";
     for (var i = 0; i < len; i++) {
-        ctx.fillText(item[i]["date"], 0, 25+(i+1)*20);
-        ctx.fillText(item[i]["name"], 200, 25+(i+1)*20);
-        ctx.fillText(Number(item[i]["price"]).toLocaleString(), 400, 25+(i+1)*20);
-        ctx.fillText(item[i]["memo"], 600, 25+(i+1)*20);
+        ctx.fillText(item[i]["date"], 0, title_h+(i+1)*gap);
+        ctx.fillText(item[i]["name"], 400, title_h+(i+1)*gap);
+        ctx.fillText(Number(item[i]["price"]).toLocaleString(), 800, title_h+(i+1)*gap);
+        ctx.fillText(item[i]["memo"], 1200, title_h+(i+1)*gap);
     }
 };
