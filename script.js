@@ -14,9 +14,14 @@ for (var i = 2209; i < 5000; i++) {
 */
     //var path = './data/'
 
+// Profit
 var salary_item = [];
+var salary_price = 0;
 var bonus_item = [];
+var bonus_price = 0;
 var income_item = [];
+var income_price = 0;
+
 var loss_item = [];
 var items = [];
 
@@ -32,6 +37,13 @@ $.getJSON("./data/2209/items.json", function(data) {
             profit += price;
             if (items[i]['label'] == "월급") {
                 salary_item.push(items[i]);
+                salary_price += price;
+            } else if (items[i]['label'] == "성과급") {
+                bonus_item.push(items[i]);
+                bonus_price += price;
+            } else {
+                income_item.push(items[i]);
+                income_price += price;
             }
         } else {
             loss -= price;
@@ -69,17 +81,16 @@ $.getJSON("./data/2209/items.json", function(data) {
     ctx_pt.font = "60px '맑은 고딕'";
     ctx_pt.textAlign = 'center';
     ctx_pt.textBaseline = 'hanging';
-    ctx_pt.fillText('수입', w*0.5, 0);
+    ctx_pt.fillStyle = 'rgba(54, 162, 235, 1)',
+    ctx_pt.fillText('수입: ' + (salary_price+bonus_price+income_price).toLocaleString(), w*0.5, 0);
 
     // draw profit chart 
     Chart.defaults.font.size = 50;
     console.log(salary_item);
     console.log(loss_item.length);
-    var salary_price = 0;
-    for (var i=0; i<salary_item.length; i++) {
-        salary_price += Number(salary_item[i]['price'])
-    }
     console.log(salary_price);
+    console.log(bonus_price);
+    console.log(income_price);
     const ctx_pc = document.getElementById('profitChart').getContext('2d');
     const pChart = new Chart(ctx_pc, {
         type: 'doughnut',
@@ -87,7 +98,7 @@ $.getJSON("./data/2209/items.json", function(data) {
             labels: ['월급', '성과급', '기타소득'],
             datasets: [{
                 label: 'Amount',
-                data: [salary_price, 2, 3],
+                data: [salary_price, bonus_price, income_price],
                 backgroundColor: [
                     'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',
@@ -101,7 +112,11 @@ $.getJSON("./data/2209/items.json", function(data) {
         }
     });
 
-
+    // draw profit Item
+    drawItem("월급", salary_item, "salaryItem");
+    drawItem("성과급", bonus_item, "bonusItem");
+    drawItem("기타소득", income_item, "incomeItem");
+    //console.log(income_item);
 });
 {
 const ctx = document.getElementById('myChart').getContext('2d');
@@ -139,4 +154,22 @@ const myChart = new Chart(ctx, {
         }
     }
 });
+};
+
+function drawItem(title, item, canvas) {
+    const ctx = document.getElementById(canvas).getContext('2d');
+    var len = item.length;
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = 25 + len*20 + 20;
+    var w = ctx.canvas.width;
+
+    ctx.font = "bold 20px '맑은 고딕'";
+    ctx.fillText(title, 2, 20);
+    ctx.font = "18px '맑은 고딕'";
+    for (var i = 0; i < len; i++) {
+        ctx.fillText(item[i]["date"], 0, 25+(i+1)*20);
+        ctx.fillText(item[i]["name"], 200, 25+(i+1)*20);
+        ctx.fillText(Number(item[i]["price"]).toLocaleString(), 400, 25+(i+1)*20);
+        ctx.fillText(item[i]["memo"], 600, 25+(i+1)*20);
+    }
 };
