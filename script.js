@@ -355,6 +355,22 @@ function drawItem(title, item, canvas) {
     ctx.font = "bold 40px '맑은 고딕'";
     ctx.fillText(title, 2, 40);
     ctx.font = "36px '맑은 고딕'";
+
+    item.sort((a,b) => {
+        aa = a.date.split('.')[2].split(' ')
+        bb = b.date.split('.')[2].split(' ')
+
+        aaa = aa[0] + aa[1].split(':').join('');
+        bbb = bb[0] + bb[1].split(':').join('');
+
+        if (aaa < bbb){
+            return -1;
+        } else if (aaa > bbb){
+            return 1;
+        } else {
+            return 0;
+        }
+    })
     for (var i = 0; i < len; i++) {
         ctx.fillText(item[i]["date"], 0, title_h+(i+1)*gap);
         ctx.fillText(item[i]["name"].slice(0,8), 300, title_h+(i+1)*gap);
