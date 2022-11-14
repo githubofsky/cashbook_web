@@ -13,7 +13,21 @@ for (var i = 2209; i < 5000; i++) {
 }
 */
     //var path = './data/'
+    //console.log('here?');
+document.readyState === 'complete' ? init () : window.onload = init;
+function init() {
+    drawAll('2210');
+}
 
+function changeMonth(){
+    var box = document.getElementById("monthBox");
+    var val = box.options[box.selectedIndex].value
+    drawAll(val)
+}
+
+var pChart, l1Chart, l2Chart;
+
+function drawAll(mon) {
 // Profit
 var salary_item = [];
 var salary_price = 0;
@@ -56,7 +70,7 @@ var culture_price = 0;
 var etc_item = [];
 var etc_price = 0;
 
-$.getJSON("./data/2209/items.json", function(data) {
+$.getJSON("./data/"+mon+"/items.json", function(data) {
     items = data['items']
 
     var profit = 0
@@ -127,11 +141,6 @@ $.getJSON("./data/2209/items.json", function(data) {
     }
     sum = profit + loss;
 
-    const ctx_m = document.getElementById('month').getContext('2d');
-    ctx_m.font = "30px '맑은 고딕'";
-    ctx_m.fillStyle = 'rgba(0, 0, 0, 0.5)';
-    ctx_m.fillText('2022.09', 0, 30);
-
     const ctx = document.getElementById('title').getContext('2d');
     ctx.canvas.width = window.innerWidth;
     var w = ctx.canvas.width;
@@ -161,9 +170,13 @@ $.getJSON("./data/2209/items.json", function(data) {
     // draw profit chart 
     Chart.defaults.font.size = 50;
     const ctx_pc = document.getElementById('profitChart').getContext('2d');
+    ctx_pc.clearRect(0,0,ctx_pc.width,ctx_pc.height)
+    ctx_pc.beginPath();
     ctx_pc.canvas.width = window.innerWidth;
     ctx_pc.canvas.height = window.innerWidth;
-    const pChart = new Chart(ctx_pc, {
+    if (pChart != null)
+        pChart.destroy();
+    pChart = new Chart(ctx_pc, {
         type: 'doughnut',
         data: {
             labels: ['월급', '성과급', '기타소득'],
@@ -197,7 +210,10 @@ $.getJSON("./data/2209/items.json", function(data) {
     // draw necessity chart 
     Chart.defaults.font.size = 50;
     const ctx_l1c = document.getElementById('loss1Chart').getContext('2d');
-    const l1Chart = new Chart(ctx_l1c, {
+    if (l1Chart != null) {
+        l1Chart.destroy();
+    }
+    l1Chart = new Chart(ctx_l1c, {
         type: 'doughnut',
         data: {
             labels: ['이자', '보험금', '통신비', '주거비', '교육비', '유류비', '가족', '저축', '세금'],
@@ -239,7 +255,10 @@ $.getJSON("./data/2209/items.json", function(data) {
     // draw necessity chart 
     Chart.defaults.font.size = 50;
     const ctx_l2c = document.getElementById('loss2Chart').getContext('2d');
-    const l2Chart = new Chart(ctx_l2c, {
+    if (l2Chart != null) {
+        l2Chart.destroy();
+    }
+    l2Chart = new Chart(ctx_l2c, {
         type: 'doughnut',
         data: {
             labels: ['식비', '편의점', '마트', '의료비', '문화생활', '기타지출'],
@@ -269,7 +288,7 @@ $.getJSON("./data/2209/items.json", function(data) {
     drawItem("문화생활", culture_item, "cultureItem");
     drawItem("기타지출", etc_item, "etcItem");
 });
-
+}
 /*
 {
 const ctx = document.getElementById('myChart').getContext('2d');
