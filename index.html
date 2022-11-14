@@ -5,29 +5,46 @@
 
 <body>
 <form>
-    <label for="pswd">Enter your password: </label>
-    <input type="password" id="pswd" onkeypress="checkEnter(this.form);"/>
-    <input type="button" value="Submit" onclick="checkPswd();" />
+    <label for="pswd" style="font-size:50px">Enter your password: </label>
+    <br>
+    <input type="password" id="pswd" style="font-size:50px">
+    <input type="button" value="Submit" style="font-size:50px" onclick="checkPswd();" />
 </form>
 <!--Function to check password the already set password is admin-->
 <script>
-    var input = document.getElementById("password");
+    var input = document.getElementById("pswd");
+    var button = document.getElementById("button");
+    input.addEventListener("keypress", keyPress);
+    function keyPress(event) {
+        if (event.key == "Enter") {
+            event.preventDefault();
+            checkPswd();
+        }
+    }
+
     function checkEnter(f) {
         if(f.keyCode == 13){
             document.getElementById("button").click();
         }
+        console.log('here')
     }
 
     function checkPswd() {
         var confirmPassword = "860626";
         var password = document.getElementById("pswd").value;
         if (password == confirmPassword) {
-             //window.location="cashbook.html";
-             location.href="./cashbook.html";
+            goIn();
+            return true
         }
         else{
             alert("Passwords do not match.");
+            return false
         }
+    }
+
+    function goIn() {
+        window.location="cashbook.html";
+        //location.href="./cashbook.html";
     }
 </script>
 

@@ -311,12 +311,13 @@ const myChart = new Chart(ctx, {
 function drawTitle(title, color, canvas) {
     const ctx_pt = document.getElementById(canvas).getContext('2d');
     ctx_pt.canvas.width = window.innerWidth;
+    ctx_pt.canvas.height = 120;
     var w = ctx_pt.canvas.width;
     ctx_pt.font = "60px '맑은 고딕'";
     ctx_pt.textAlign = 'center';
     ctx_pt.textBaseline = 'hanging';
     ctx_pt.fillStyle = color 
-    ctx_pt.fillText(title, w*0.5, 0);
+    ctx_pt.fillText(title, w*0.5, 20);
 }
 
 function drawItem(title, item, canvas) {
