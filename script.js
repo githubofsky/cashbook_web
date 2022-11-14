@@ -161,6 +161,7 @@ $.getJSON("./data/2209/items.json", function(data) {
     // draw profit chart 
     Chart.defaults.font.size = 50;
     const ctx_pc = document.getElementById('profitChart').getContext('2d');
+    ctx_pc.canvas.width = window.innerWidth;
     const pChart = new Chart(ctx_pc, {
         type: 'doughnut',
         data: {
@@ -180,6 +181,8 @@ $.getJSON("./data/2209/items.json", function(data) {
             }]
         }
     });
+    //pChart.resize(w/2,w/2);
+    pChart.hide();
 
     // draw profit Item
     drawItem("월급", salary_item, "salaryItem");
