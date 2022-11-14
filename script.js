@@ -14,8 +14,10 @@ for (var i = 2209; i < 5000; i++) {
 */
     //var path = './data/'
     //console.log('here?');
+var width;
 document.readyState === 'complete' ? init () : window.onload = init;
 function init() {
+    width = window.innerWidth;
     drawAll('2210');
 }
 
@@ -142,7 +144,7 @@ $.getJSON("./data/"+mon+"/items.json", function(data) {
     sum = profit + loss;
 
     const ctx = document.getElementById('title').getContext('2d');
-    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.width = width;
     var w = ctx.canvas.width;
     ctx.font = "60px '맑은 고딕'";
     ctx.textAlign = 'right';
@@ -172,8 +174,8 @@ $.getJSON("./data/"+mon+"/items.json", function(data) {
     const ctx_pc = document.getElementById('profitChart').getContext('2d');
     ctx_pc.clearRect(0,0,ctx_pc.width,ctx_pc.height)
     ctx_pc.beginPath();
-    ctx_pc.canvas.width = window.innerWidth;
-    ctx_pc.canvas.height = window.innerWidth;
+    ctx_pc.canvas.width = width;
+    ctx_pc.canvas.height = width;
     if (pChart != null)
         pChart.destroy();
     pChart = new Chart(ctx_pc, {
@@ -331,7 +333,7 @@ const myChart = new Chart(ctx, {
 
 function drawTitle(title, color, canvas) {
     const ctx_pt = document.getElementById(canvas).getContext('2d');
-    ctx_pt.canvas.width = window.innerWidth;
+    ctx_pt.canvas.width = width;
     ctx_pt.canvas.height = 120;
     var w = ctx_pt.canvas.width;
     ctx_pt.font = "60px '맑은 고딕'";
@@ -344,7 +346,7 @@ function drawTitle(title, color, canvas) {
 function drawItem(title, item, canvas) {
     const ctx = document.getElementById(canvas).getContext('2d');
     var len = item.length;
-    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.width = width;
     var title_h = 45
     var gap = 40
     ctx.canvas.height = title_h + len*gap + title_h;
